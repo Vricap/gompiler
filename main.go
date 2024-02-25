@@ -25,6 +25,7 @@ func main() {
 	})
 
 	router.POST("/run", func(c *gin.Context) {
+		// TODO: Use plain TEXT instead of json
 		var code CodeStrc
 		err := c.BindJSON(&code) // using text would incrementally easier
 		if err != nil {
@@ -75,6 +76,7 @@ func main() {
 	})
 
 	router.POST("/format", func(c *gin.Context) {
+		// TODO: Use plain TEXT instead of json
 		var code CodeStrc
 		err := c.BindJSON(&code) // using text would incrementally easier
 		if err != nil {

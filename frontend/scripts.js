@@ -10,6 +10,7 @@ const runCode = () => {
 
   fetch(url + "/run", {
     method: "POST",
+    // TODO: Use plain TEXT instead of json
     headers: {
       "Content-Type": "application/json",
     },
@@ -37,6 +38,7 @@ const formatCode = () => {
 
   fetch(url + "/format", {
     method: "POST",
+    // TODO: Use plain TEXT instead of json
     headers: {
       "Content-Type": "application/json",
     },
