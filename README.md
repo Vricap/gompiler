@@ -10,4 +10,8 @@ When you write your code in the text area element and click `RUN`, it send your 
 
 Now for when you `FORMAT`, it essentially the same, your code get send to the server, server create unique Go file and write the code to that file. However, it is here where the similiarity ends. The command that the server run is `gofmt -w fileName.go`, `gofmt` is a tool part of Go tools chain, it used to format Go program. Now, that the Go file is nicely formatted, the server is then read the content and send it back to client as text.
 
-Also, it is run on Docker container. The image that is used is the official golang image, with alpine variant. Making it Go and its tools chain already installed. Check the 'Dockerfile' on the project Github repo for more info.
+Also, it is run on Docker container. The image that is used is the official golang image, with alpine variant. Making it Go and its tools chain already installed. Check the 'Dockerfile' on the project Github repo for more info.  
+To try, pull the image from docker hub.
+```
+$ docker run -p 3000:8000 vricap/gompiler
+```

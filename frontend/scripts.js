@@ -2,7 +2,7 @@ const code = document.getElementById("code");
 const runBtn = document.querySelector(".run-btn");
 const outputBlock = document.querySelector(".output-block");
 
-let url = "http://0.0.0.0:8080";
+let url = "http://localhost:8000";
 
 const runCode = () => {
   let codeToRun = code.value;

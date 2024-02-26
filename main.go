@@ -92,7 +92,7 @@ func main() {
 		// delete the file once its done
 		os.Remove(fileName)
 	})
-	router.Run()
+	router.Run("0.0.0.0:8000")
 }
 
 func writeToFile(fileName string, c *gin.Context) error {
