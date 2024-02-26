@@ -20,7 +20,7 @@ const runCode = () => {
     }),
   })
     .then((response) => {
-      if (!response) {
+      if (!response.ok) {
         throw new Error("Theres was some error running your code.");
       }
       return response.text();
@@ -47,8 +47,8 @@ const formatCode = () => {
     }),
   })
     .then((response) => {
-      if (!response) {
-        console.log(response);
+      if (!response.ok) {
+        // console.log(response);
         throw new Error("Error when attempting to format your code.");
       }
       return response.text();
@@ -60,3 +60,19 @@ const formatCode = () => {
       outputBlock.textContent = err;
     });
 };
+
+// change the behavior of pressing tab in textarea
+code.addEventListener("keydown", function (e) {
+  if (e.key === "Tab" && !e.shiftKey) {
+    e.preventDefault(); // Stop the default tab action (focus change)
+    var start = this.selectionStart;
+    var end = this.selectionEnd;
+
+    // Set textarea value to: text before caret + tab + text after caret
+    this.value =
+      this.value.substring(0, start) + "\t" + this.value.substring(end);
+
+    // Put caret at right position again (after the tab character)
+    this.selectionStart = this.selectionEnd = start + 1;
+  }
+});

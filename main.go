@@ -25,108 +25,102 @@ func main() {
 	})
 
 	router.POST("/run", func(c *gin.Context) {
-		// TODO: Use plain TEXT instead of json
-		var code CodeStrc
-		err := c.BindJSON(&code) // using text would incrementally easier
+		// generate the uuid name 
+		uuid, err := (exec.Command("uuidgen").Output()) 
+    if err != nil { 
+			fmt.Println(err)
+			c.String(500, "Theres some error running your code.")
+			return 
+    }
+
+		// specify the unique file name
+		fileName := fmt.Sprintf("input/%s.go", uuid)
+
+		// write to file 
+		err = writeToFile(string(fileName), c)
 		if err != nil {
-			fmt.Println("ERROR here: ", err)
-			return
-		}
-
-		fmt.Println(code.Code)
-
-		// specify the file name
-		fileName := "input/main.go"
-
-		// create a file with said name
-		file, err := os.Create(fileName)
-		if err != nil {
-			c.JSON(500, gin.H{
-				"status":  "error",
-				"message": err,
-			})
-			return
-		}
-		defer file.Close()
-
-		// write the conten to the file
-		_, err = file.WriteString(code.Code)
-		if err != nil {
-			c.JSON(500, gin.H{
-				"status":  "error",
-				"message": err,
-			})
 			return
 		}
 
 		// run the go file
 		cmd := exec.Command("go", "run", fileName)
 		output, _ := cmd.CombinedOutput()
-		// if err != nil {
-		// 	fmt.Println("ERROR here too: ", err)
-		// 	c.JSON(500, gin.H{
-		// 		"status": "error",
-		// 		"message": err,
-		// 	})
-		// 	return
-		// }
 
-		fmt.Println(string(output))
+		// fmt.Println(string(output))
 		c.String(200, string(output))
+
+		// delete the file once its done
+		os.Remove(fileName)
 	})
 
 	router.POST("/format", func(c *gin.Context) {
-		// TODO: Use plain TEXT instead of json
-		var code CodeStrc
-		err := c.BindJSON(&code) // using text would incrementally easier
+		// generate the uuid name 
+		uuid, err := (exec.Command("uuidgen").Output()) 
+		if err != nil { 
+			fmt.Println(err)
+			c.String(500, "Theres some error running your code.")
+			return 
+		}
+
+		// specify the unique file name
+		fileName := fmt.Sprintf("input/%s.go", uuid)
+
+		// write to file 
+		err = writeToFile(fileName, c)
 		if err != nil {
-			fmt.Println("ERROR here: ", err)
 			return
 		}
 
-		// specify the file name
-		fileName := "input/main.go"
-
-		// create a file with said name
-		file, err := os.Create(fileName)
-		if err != nil {
-			fmt.Println("ERROR here too: ", err)
-			c.JSON(500, gin.H{
-				"status":  "error",
-				"message": err,
-			})
-			return
-		}
-		defer file.Close()
-
-		// write the conten to the file
-		_, err = file.WriteString(code.Code)
-		if err != nil {
-			fmt.Println("ERROR here too: ", err)
-			c.JSON(500, gin.H{
-				"status":  "error",
-				"message": err,
-			})
-			return
-		}
-
-		// run the go file
+		// format the go file
 		cmd := exec.Command("gofmt", "-w", fileName)
 		_, err = cmd.CombinedOutput()
 		if err != nil {
-			fmt.Println("ERROR here too: ", err)
-			c.String(500, err.Error())
+			fmt.Println(err)
+			c.String(500, "Theres some error running your code.")
 			return
 		}
 
-		// fmt.Println(string(output))
+		// read the go file to send the formatted code to client
 		output,err := os.ReadFile(fileName)
 		if err != nil {
-			fmt.Println("ERROR here too: ", err)
-			c.String(500, err.Error())
-			return 
+			fmt.Println(err)
+			c.String(500, "Theres some error running your code.")
+			return
 		}
 		c.String(200, string(output))
+
+		// delete the file once its done
+		os.Remove(fileName)
 	})
 	router.Run()
+}
+
+func writeToFile(fileName string, c *gin.Context) error {
+	// TODO: Use plain TEXT instead of json
+	var code CodeStrc
+	err := c.BindJSON(&code) // using text would incrementally easier
+	if err != nil {
+		fmt.Println(err)
+		c.String(500, "Theres some error running your code.")
+	}
+
+	// fmt.Println(code.Code)
+
+	// create a file with said name
+	file, err := os.Create(fileName)
+	if err != nil {
+		fmt.Println(err)
+		c.String(500, "Theres some error running your code.")
+		return err
+	}
+	defer file.Close()
+
+	// write the conten to the file
+	_, err = file.WriteString(code.Code)
+	if err != nil {
+		fmt.Println(err)
+		c.String(500, "Theres some error running your code.")
+		return err
+	}
+	return nil
 }
