@@ -12,6 +12,9 @@ Now for when you `FORMAT`, it essentially the same, your code get send to the se
 
 Also, it is run on Docker container. The image that is used is the official golang image, with alpine variant. Making it Go and its tools chain already installed. Check the 'Dockerfile' on the project Github repo for more info.  
 To try, pull the image from docker hub.
+
 ```
 $ docker run -p 3000:8000 vricap/gompiler
 ```
+
+Then go to localhost:3000 to try.
