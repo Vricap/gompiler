@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="static/style.css" />
   </head>
   <body>
-    <div class="code-editor">
-      <h2>GOMPILER</h2>
-      <textarea name="code" id="code" cols="100" rows="10">
+    <div class="main">
+      <div class="code-editor">
+        <h2>GOMPILER</h2>
+        <textarea name="code" id="code" cols="60" rows="15">
 package main
 
 // Code below here!
@@ -19,16 +20,61 @@ import "fmt"
 func main() {
         fmt.Println("Hello World!")
 }
-        </textarea
-      >
-      <button onclick="runCode()">RUN</button>
-      <button onclick="formatCode()">FORMAT</button>
+        </textarea>
+        <button onclick="runCode()">RUN</button>
+        <button onclick="formatCode()">FORMAT</button>
+        <select name="" id="example">
+          <option value="helo world">Helo World!</option>
+          <option value="fibonacci">Fibonacci</option>
+          <option value="bubble sort">Bubble Sort</option>
+        </select>
+      </div>
+
+      <div class="output">
+        <textarea readonly class="output-block" cols="60" rows="10">
+Your output will be here.</textarea
+        >
+      </div>
     </div>
 
-    <div class="output">
-      <textarea readonly class="output-block" cols="100" rows="10">
-Your output will be here.</textarea
-      >
+    <div class="side">
+      <p>
+        <strong>GOMPILER</strong><br />
+        Gompiler is an live or online compiler for Go programming language. It
+        is of course primarily written in Golang for its backend. <br />
+        <br />
+        <strong>How It Works</strong> <br />
+        Just for note, i'm pretty sure those online compiler out there had
+        better mechanism, and how it work in general, more safe, secure, clean
+        and less verbose. However, this is how mines work. <br />
+        <br />
+        When you write your code in the text area element and click
+        <strong><code>RUN</code></strong
+        >, it send your code as JSON (i have no idea why i didn't just use
+        text). On the server, the server is then create an Go file with unique
+        name--it had to be unique since if it not, users when running code at
+        the same time might override their code one another. After creating that
+        unique Go file, server then write the content (your code) to the file.
+        Server then execute command
+        <strong><code>go run fileName.go</code></strong
+        >, which the output of that command is then send back to client, which
+        is then rendered in the output text area. <br />
+        <br />
+        Now for when you <strong><code>FORMAT</code></strong
+        >, it essentially the same, your code get send to the server, server
+        create unique Go file and write the code to that file. However, it is
+        here where the similiarity ends. The command that the server run is
+        <strong><code>gofmt -w fileName.go</code></strong
+        >, <strong><code>gofmt</code></strong> is a tool part of Go tools chain,
+        it used to format Go program. Now, that the Go file is nicely formatted,
+        the server is then read the content and send it back to client as text.
+        <br />
+        <br />
+        Also, it is run on Docker container. The image that is used is the
+        official golang image, with alpine variant. Making it Go and its tools
+        chain already installed. Check the 'Dockerfile' on the project Github
+        repo for more info.
+      </p>
     </div>
     <script src="static/scripts.js"></script>
   </body>

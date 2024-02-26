@@ -76,3 +76,63 @@ code.addEventListener("keydown", function (e) {
     this.selectionStart = this.selectionEnd = start + 1;
   }
 });
+
+const heloWorld = `
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}`;
+
+const fibonacci = `
+package main
+
+import "fmt"
+
+func main() {
+    var n, a, b int = 10, 0, 1
+    fmt.Println("Fibonacci Series up to", n, "terms:")
+    for i := 0; i < n; i++ {
+        fmt.Print(a, " ")
+        next := a + b
+        a = b
+        b = next
+    }
+    fmt.Println()
+}`;
+
+const bubbleSort = `
+package main
+
+import "fmt"
+
+func bubbleSort(arr []int) {
+    n := len(arr)
+    for i := 0; i < n-1; i++ {
+        for j := 0; j < n-i-1; j++ {
+            if arr[j] > arr[j+1] {
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+            }
+        }
+    }
+}
+
+func main() {
+    arr := []int{64, 34, 25, 12, 22, 11, 90}
+    fmt.Println("Original array:", arr)
+    bubbleSort(arr)
+    fmt.Println("Sorted array:  ", arr)
+}`;
+
+const example = {
+  "helo world": heloWorld,
+  fibonacci: fibonacci,
+  "bubble sort": bubbleSort,
+};
+
+document.getElementById("example").addEventListener("change", function () {
+  let selectedExample = this.value;
+  code.value = example[selectedExample];
+});

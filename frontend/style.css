@@ -1,3 +1,16 @@
 body {
-  /* background-color: black; */
+  display: flex;
+  gap: 20px;
+}
+
+textarea {
+  font-size: 17px;
+}
+
+code {
+  background-color: #3d3939;
+  color: #e4dadf;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: Consolas, "Courier New", monospace;
 }
