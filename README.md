@@ -14,7 +14,7 @@ Also, it is run on Docker container. The image that is used is the official gola
 To try, pull the image from docker hub.
 
 ```
-$ docker run -p 3000:8000 vricap/gompiler
+$ docker run -p 8000:8000 vricap/gompiler
 ```
 
-Then go to localhost:3000 to try.
+Then go to `localhost:8000` to try.
