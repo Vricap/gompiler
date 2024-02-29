@@ -15,7 +15,12 @@ type CodeStrc struct {
 
 func main() {
 	router := gin.Default()
-	router.Use(cors.Default())
+	// Configure CORS
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST"},
+		AllowHeaders:     []string{"Origin", "Content-Type"},
+}))
 
 	router.LoadHTMLGlob("frontend/*")
 	router.Static("/static", "./frontend")
